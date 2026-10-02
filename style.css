@@ -1,0 +1,266 @@
+/* ═══════════════════════════════════════════════════════
+   hi.tahayerdekalmazer.com — kartvizit bağlantı sayfası
+   Portföyle aynı dil: koyu zemin, altın vurgu, film greni.
+   Gradient yok — yumuşaklık solid renk + blur ile.
+   ═══════════════════════════════════════════════════════ */
+
+:root{
+  --bg:      #070708;
+  --bg-soft: #0d0d0f;
+  --bg-row:  #0f0f11;
+  --ink:     #f0ede6;
+  --muted:   #97928a;
+  --line:    rgba(240,237,230,.11);
+  --gold:    #d8b36a;
+  --gold-ink:#141005;
+  --font-d:  'Space Grotesk', 'Helvetica Neue', sans-serif;
+  --font-b:  'Inter', 'Helvetica Neue', sans-serif;
+  --ease:    cubic-bezier(.76,0,.24,1);
+  --out:     cubic-bezier(.16,1,.3,1);
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+html, body{ background:var(--bg); }
+body{
+  min-height:100svh;
+  color:var(--ink);
+  font-family:var(--font-b);
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+::selection{ background:var(--gold); color:var(--gold-ink); }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+
+/* ── Film greni + arka ışık ───────────────────────────── */
+.grain{
+  position:fixed; inset:-60px; z-index:50; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity:.06;
+  animation:grain 900ms steps(4) infinite;
+}
+@keyframes grain{
+  0%{ transform:translate(0,0); } 25%{ transform:translate(-18px,12px); }
+  50%{ transform:translate(14px,-16px); } 75%{ transform:translate(-10px,-8px); }
+  100%{ transform:translate(0,0); }
+}
+.glow{
+  position:fixed; z-index:0; pointer-events:none;
+  width:520px; height:520px; border-radius:50%;
+  left:50%; top:-300px; transform:translateX(-50%);
+  background:var(--gold); opacity:.09; filter:blur(120px);
+  animation:breathe 7s ease-in-out infinite;
+}
+@keyframes breathe{ 50%{ opacity:.14; transform:translateX(-50%) scale(1.08); } }
+
+/* ── Kart ─────────────────────────────────────────────── */
+.card{
+  position:relative; z-index:1;
+  width:100%; max-width:460px;
+  margin:0 auto;
+  padding:calc(20px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom));
+}
+
+/* Kart okundu şeridi */
+.tap{
+  display:flex; align-items:center; gap:10px;
+  font:500 11px/1 var(--font-d);
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted);
+}
+.tap__dot{
+  width:6px; height:6px; border-radius:50%; background:var(--gold);
+  box-shadow:0 0 0 0 rgba(216,179,106,.6);
+  animation:ping 2.4s var(--out) infinite;
+}
+@keyframes ping{ 0%{ box-shadow:0 0 0 0 rgba(216,179,106,.55); } 70%,100%{ box-shadow:0 0 0 9px rgba(216,179,106,0); } }
+.tap__line{
+  flex:1; height:1px; background:var(--line); position:relative; overflow:hidden;
+}
+.tap__line::after{
+  content:''; position:absolute; inset:0; background:var(--gold);
+  transform:scaleX(0); transform-origin:left;
+  animation:scan 1.4s var(--ease) .2s forwards;
+}
+@keyframes scan{ 60%{ transform:scaleX(1); transform-origin:left; } 61%{ transform-origin:right; } 100%{ transform:scaleX(0); transform-origin:right; } }
+.lang{
+  font:500 11px/1 var(--font-d); letter-spacing:.14em;
+  color:var(--ink); padding:7px 10px; border:1px solid var(--line); border-radius:99px;
+  transition:border-color .3s, color .3s;
+}
+.lang:hover{ border-color:var(--gold); color:var(--gold); }
+
+/* Kimlik */
+.id{ padding:44px 0 26px; }
+.hi{
+  display:inline-flex; align-items:baseline;
+  font:500 64px/.8 var(--font-d); letter-spacing:-.06em;
+  margin-bottom:30px;
+}
+.hi__w{ color:var(--ink); display:inline-block; transform-origin:70% 85%; }
+.hi__d{ color:var(--gold); }
+.js.in .hi__w{ animation:wave 1.6s var(--out) .9s 1; }
+@keyframes wave{
+  0%,100%{ transform:rotate(0); } 15%{ transform:rotate(-10deg); } 30%{ transform:rotate(8deg); }
+  45%{ transform:rotate(-6deg); } 60%{ transform:rotate(3deg); }
+}
+.hi__d{ display:inline-block; animation:blink 3.2s ease-in-out 2.6s infinite; }
+@keyframes blink{ 50%{ opacity:.35; } }
+.name{
+  font:500 clamp(40px, 12.5vw, 56px)/.92 var(--font-d);
+  letter-spacing:-.045em;
+}
+.name__l{ display:block; overflow:hidden; }
+.name__l:last-child{ color:var(--gold); }
+.role{
+  margin-top:18px; font-size:15px; color:var(--ink); opacity:.86;
+}
+.meta{
+  margin-top:10px; display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  font-size:13px; color:var(--muted);
+}
+.live{ display:inline-flex; align-items:center; gap:7px; }
+.live i{ width:6px; height:6px; border-radius:50%; background:#7fc98f; }
+.sep{ opacity:.4; }
+
+/* Aksiyon butonları */
+.actions{ display:grid; grid-template-columns:1.4fr 1fr; gap:8px; margin-bottom:34px; }
+.btn{
+  height:50px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font:500 14px/1 var(--font-d); letter-spacing:-.01em;
+  border:1px solid var(--line); background:var(--bg-soft);
+  transition:transform .25s var(--out), background .3s, border-color .3s, color .3s;
+}
+.btn:hover{ border-color:rgba(240,237,230,.3); }
+.btn:active{ transform:scale(.97); }
+.btn--gold{ background:var(--gold); color:var(--gold-ink); border-color:var(--gold); }
+.btn--gold:hover{ background:#e4c27e; border-color:#e4c27e; }
+
+/* Bölüm etiketi */
+.label{
+  display:flex; gap:12px; align-items:baseline;
+  font:500 11px/1 var(--font-d); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 12px;
+}
+.label span:first-child{ color:var(--gold); }
+
+/* Bağlantı satırları */
+.links{ display:flex; flex-direction:column; gap:6px; margin-bottom:34px; }
+.row{
+  position:relative; overflow:hidden; isolation:isolate;
+  display:grid; grid-template-columns:42px 1fr auto; align-items:center; gap:14px;
+  padding:12px 16px 12px 12px; border-radius:16px;
+  background:var(--bg-row); border:1px solid var(--line);
+  transition:border-color .35s, transform .25s var(--out);
+}
+.row::before{ /* altın dolgu soldan süpürür */
+  content:''; position:absolute; inset:0; z-index:-1; background:var(--gold);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .55s var(--ease);
+}
+.row:active{ transform:scale(.985); }
+.row__ic{
+  width:42px; height:42px; border-radius:11px;
+  display:grid; place-items:center;
+  background:var(--bg); border:1px solid var(--line);
+  transition:background .4s, border-color .4s;
+}
+.row__ic svg{
+  width:19px; height:19px; fill:none; stroke:var(--ink);
+  stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;
+  transition:stroke .4s;
+}
+.row__t{ display:flex; flex-direction:column; min-width:0; }
+.row__t b{ font:500 16px/1.25 var(--font-d); letter-spacing:-.015em; }
+.row__t small{
+  font-size:12.5px; color:var(--muted); margin-top:2px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  transition:color .4s;
+}
+.row__a{
+  font:500 16px/1 var(--font-d); color:var(--muted);
+  transition:color .4s, transform .4s var(--out);
+}
+.row__a--copy{
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  padding:7px 9px; border:1px solid var(--line); border-radius:99px;
+}
+@media (hover:hover){
+  .row:hover{ border-color:var(--gold); }
+  .row:hover::before{ transform:scaleX(1); }
+  .row:hover .row__t, .row:hover .row__a{ color:var(--gold-ink); }
+  .row:hover .row__t small{ color:rgba(20,16,5,.62); }
+  .row:hover .row__ic{ background:var(--gold-ink); border-color:var(--gold-ink); }
+  .row:hover .row__ic svg{ stroke:var(--gold); }
+  .row:hover .row__a{ transform:translate(2px,-2px); }
+  .row:hover .row__a--copy{ border-color:rgba(20,16,5,.3); transform:none; }
+}
+
+/* Öne çıkan */
+.feat{
+  display:block; border-radius:18px; overflow:hidden;
+  border:1px solid var(--line); background:var(--bg-row);
+  transition:border-color .35s;
+}
+.feat__img{ display:block; aspect-ratio:900/420; overflow:hidden; background:var(--bg-soft); }
+.feat__img img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  transform:scale(1.02); transition:transform 1.1s var(--out);
+}
+.feat__body{ display:flex; flex-direction:column; gap:8px; padding:16px 18px 18px; }
+.feat__k{ font:500 11px/1 var(--font-d); letter-spacing:.14em; text-transform:uppercase; color:var(--gold); }
+.feat__t{ font:500 19px/1.25 var(--font-d); letter-spacing:-.02em; }
+.feat__cta{ font-size:13px; color:var(--muted); transition:color .3s; }
+@media (hover:hover){
+  .feat:hover{ border-color:rgba(216,179,106,.5); }
+  .feat:hover img{ transform:scale(1.07); }
+  .feat:hover .feat__cta{ color:var(--gold); }
+}
+
+/* Alt bilgi */
+.foot{
+  display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  margin-top:34px; padding-top:18px; border-top:1px solid var(--line);
+  font-size:12px; color:var(--muted);
+}
+.foot__k{ font-family:var(--font-d); letter-spacing:.02em; }
+
+/* Bildirim */
+.toast{
+  position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom)); z-index:60;
+  transform:translate(-50%, 20px); opacity:0; pointer-events:none;
+  padding:11px 16px; border-radius:99px;
+  background:var(--ink); color:var(--bg);
+  font:500 13px/1 var(--font-d);
+  transition:opacity .3s, transform .45s var(--out);
+}
+.toast.on{ opacity:1; transform:translate(-50%,0); }
+
+/* ── Giriş koreografisi ───────────────────────────────── */
+.js .card > *{ opacity:0; transform:translateY(16px); }
+.js .name__l{ opacity:1; }
+.js.in .card > *{
+  opacity:1; transform:none;
+  transition:opacity .9s var(--out), transform 1s var(--out);
+  transition-delay:calc(var(--i, 0) * 70ms + 150ms);
+}
+.js .row{ opacity:0; transform:translateY(10px); }
+.js.in .row{
+  opacity:1; transform:none;
+  transition:opacity .8s var(--out), transform .9s var(--out), border-color .35s;
+  transition-delay:calc(var(--r, 0) * 60ms + 480ms);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .grain, .glow, .tap__dot, .tap__line::after, .hi__w, .hi__d{ animation:none; }
+  .js .card > *, .js .row{ opacity:1; transform:none; transition:none; }
+}
+
+@media (min-width:600px){
+  .card{ padding-top:56px; }
+  .id{ padding-top:56px; }
+}
