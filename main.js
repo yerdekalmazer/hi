@@ -54,7 +54,7 @@
     'BEGIN:VCARD', 'VERSION:3.0',
     'N:Yerdekalmazer;Taha;;;', 'FN:Taha Yerdekalmazer',
     'TITLE:Digital Product Developer · Product Designer',
-    'EMAIL;TYPE=INTERNET:info@tahayerdekalmazer.com',
+    'EMAIL;TYPE=INTERNET:hi@tahayerdekalmazer.com',
     'URL:https://www.tahayerdekalmazer.com/',
     'URL:https://www.linkedin.com/in/tyerdekalmazer/',
     'URL:https://github.com/yerdekalmazer',
