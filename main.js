@@ -63,9 +63,16 @@
     'END:VCARD',
   ].join('\r\n');
 
+  // Rehber kartına fotoğraf da girsin (base64, satır katlamalı)
+  let photo = '';
+  fetch('img/taha.jpg').then(r => r.blob()).then(b => new Promise(ok => {
+    const fr = new FileReader(); fr.onload = () => ok(fr.result.split(',')[1]); fr.readAsDataURL(b);
+  })).then(b64 => { photo = 'PHOTO;ENCODING=b;TYPE=JPEG:' + b64.match(/.{1,74}/g).join('\r\n '); }).catch(() => {});
+
   document.getElementById('save').addEventListener('click', e => {
     e.preventDefault();
-    const url = URL.createObjectURL(new Blob([vcf], { type: 'text/vcard;charset=utf-8' }));
+    const card = photo ? vcf.replace('END:VCARD', photo + '\r\nEND:VCARD') : vcf;
+    const url = URL.createObjectURL(new Blob([card], { type: 'text/vcard;charset=utf-8' }));
     const a = Object.assign(document.createElement('a'), { href: url, download: 'Taha-Yerdekalmazer.vcf' });
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 4000);
